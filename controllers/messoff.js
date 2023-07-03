@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import MessOff from "../models/Messoff.js";
+import MessOff from "../models/MessOff.js";
 import Student from "../models/Student.js";
 
 export const requestMessOff = async (req, res) => {
