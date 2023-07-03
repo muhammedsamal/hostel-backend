@@ -1,5 +1,22 @@
 # hostel-backend
 
+clone the repository 
+```bash
+git clone https://github.com/muhammedsamal/hostel-backend
+```
+change the directory
+```bash
+cd hostel-backend
+```
+install packages
+```bash
+npm i
+```
+run
+```bash
+npm start
+```
+
 # Authentication
 
 >http://localhost:8080/api/auth/student/signup
