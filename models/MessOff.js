@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const messOffSchema = new Schema({
   student: {
     type: Schema.Types.ObjectId,
-    ref: "student",
+    ref: "Student",
   },
   leaving_date: {
     type: Date,

@@ -52,37 +52,45 @@ export const countMessOff = async (req, res) => {
 }
 
 export const listMessOff = async (req, res) => {
-  // const { hostel } = req.body;
   try {
     const students = await Student.find().select("_id");
-    // console.log(students)
+
     const list = await MessOff.find({
       student: { $in: students },
       status: "pending",
     }).populate("student", ["name", "email"]);
-    // console.log(list)
-    const approved = await MessOff.countDocuments({
+
+    const currentDate = new Date();
+    const firstDayOfMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      1
+    );
+    const lastDayOfMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      0
+    );
+
+    const approvedCount = await MessOff.countDocuments({
       student: { $in: students },
       status: "approved",
-      leaving_date: {
-        $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-        $lte: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
-      },
+      leaving_date: { $gte: firstDayOfMonth, $lte: lastDayOfMonth },
     });
-    const rejected = await MessOff.countDocuments({
+
+    const rejectedCount = await MessOff.countDocuments({
       student: { $in: students },
       status: "rejected",
-      leaving_date: {
-        $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-        $lte: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
-      },
+      leaving_date: { $gte: firstDayOfMonth, $lte: lastDayOfMonth },
     });
-    return res.status(200).json({ list, approved, rejected });
-    // return res.status(200).json({ approved, rejected });
+
+    return res
+      .status(200)
+      .json({ list, approved: approvedCount, rejected: rejectedCount });
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 export const updateMessOff = async (req, res) => {
   const { id, status } = req.body;
